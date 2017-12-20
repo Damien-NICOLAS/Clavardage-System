@@ -40,7 +40,6 @@ public class PseudoPageController {
             this.chatManager.getProtocoleDeCommunication().diffusionDuUserLocal();
         }
         DialoguePageViewer dialoguePageViewer = new DialoguePageViewer(pseudo, this.chatManager);
-        this.chatManager.getProtocoleDeCommunication().diffusionDuUserLocal();
         parent.dispose();
         dialoguePageViewer.display();
     }
