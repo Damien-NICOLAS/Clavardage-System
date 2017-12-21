@@ -72,9 +72,10 @@ public class DialoguePageViewer extends JFrame{
         listeUsersConnectes.addTreeSelectionListener(e -> presenter.onClickSelectionUserCo(listeUsersConnectes.getName(),root, listeSessions) );
 
         DefaultMutableTreeNode rootSession = new DefaultMutableTreeNode("Sessions Actives");
+        presenter.actualiserMenuSessions(rootSession);
         listeSessions = new JTree(rootSession);
         listeSessions.setScrollsOnExpand(true);
-        presenter.actualiserMenuSessions(rootSession, listeSessions);
+
         listeSessions.updateUI();
         //listeSessions.addTreeSelectionListener(e -> presenter.onClickSelection(listeSessions.getName(),rootSession,listeSessions));
 
@@ -86,14 +87,12 @@ public class DialoguePageViewer extends JFrame{
         JButton ActualiseUsersCoButton = new JButton("Actualiser");
         ActualiseUsersCoButton.addActionListener(e -> presenter.actualiserMenuUsersCo(root));
 
-        JButton montreToutLesUsersDeLaHash = new JButton("Show");
-        montreToutLesUsersDeLaHash.addActionListener(e -> presenter.show());
 
 
         Box userCoBox = Box.createVerticalBox();
         userCoBox.add(listePane);
         userCoBox.add(ActualiseUsersCoButton);
-        userCoBox.add(montreToutLesUsersDeLaHash);
+
 
         JPanel sessionsPane = new JPanel();
         sessionsPane.setBackground(Color.WHITE);

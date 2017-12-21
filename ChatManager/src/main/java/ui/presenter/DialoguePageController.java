@@ -40,7 +40,7 @@ public class DialoguePageController {
             System.out.println("Après ajout : ");
             chatManager.useListSessions().afficheListeSessions();
             System.out.println("Liste des usagers dans la table :" + chatManager.accesALaListeDesUsagers().retourneToutLesUsagersAsString());
-            actualiserMenuSessions(root, listeSessions);
+            actualiserMenuSessions(root);
 
         }
     }
@@ -54,15 +54,17 @@ public class DialoguePageController {
 
     public void actualiserMenuUsersCo(DefaultMutableTreeNode root) {
         if (!(this.chatManager.accesALaListeDesUsagers().retourneToutLesUsagers().isEmpty())) {
-
             for (String usersCo : this.chatManager.accesALaListeDesUsagers().retourneToutLesUsagers()) {
-                String pseudoUsersCo = this.chatManager.accesALaListeDesUsagers().retourneUnUtilisateurDistantParSonLogin(usersCo).getPseudoActuel();
-                System.out.println("Pseudo co : " + pseudoUsersCo);
 
-                if(pseudoUsersCo != null) {
-                    if (!(pseudoUsersCo == this.chatManager.userPseudo())) {
+                if(!usersCo.equals(chatManager.userLogin())) {
+                    String pseudoUsersCo = this.chatManager.accesALaListeDesUsagers().retourneUnUtilisateurDistantParSonLogin(usersCo).getPseudoActuel();
+
+                    System.out.println("Pseudo co : " + pseudoUsersCo);
+
+                    if(pseudoUsersCo != null) {
                         DefaultMutableTreeNode child = new DefaultMutableTreeNode(pseudoUsersCo);
                         root.add(child);
+
                     }
                 }
             }
@@ -70,7 +72,7 @@ public class DialoguePageController {
         }
     }
 
-    public void actualiserMenuSessions(DefaultMutableTreeNode root, JTree listeSessions) {
+    public void actualiserMenuSessions(DefaultMutableTreeNode root) {
         if (!(this.chatManager.accesALaListeDesUsagers().retourneToutLesUsagers().isEmpty())) {
 
             for (UsersDistants sessionCourante : this.chatManager.useListSessions().retourneListeSessions()) {
@@ -82,7 +84,6 @@ public class DialoguePageController {
                     root.add(child);
                 }
             }
-            listeSessions.updateUI();
         }
     }
 
@@ -94,9 +95,4 @@ public class DialoguePageController {
 
     }
 
-    public void show() {
-        ListeDesUsagers list = chatManager.accesALaListeDesUsagers();
-
-        System.out.println(list.retourneToutLesUsagersAsString());
-    }
 }

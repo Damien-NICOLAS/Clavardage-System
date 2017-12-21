@@ -95,8 +95,11 @@ public class ProtocoleDeCommunication {
         System.out.println(enteteDuMessageRentrant);
         switch (enteteDuMessageRentrant) {
             case ENVOIE_MESSAGE:
-                //clavardageManager.envoieAuDessus(messageSurLeReseauRecue[1]);
-
+                String messageEtCeluiQuiTeParleAsString = messageSurLeReseauRecue[1];
+                String[] messageEtCeluiQuiTeParleAsTab = messageEtCeluiQuiTeParleAsString.split("[,]");
+                String celuiQuiTeParle = messageEtCeluiQuiTeParleAsTab[0];
+                String message = messageEtCeluiQuiTeParleAsTab[1];
+                //Utiliser écriture dans le fichier
 
                 break;
             case ENVOIE_USERLOCAL:
