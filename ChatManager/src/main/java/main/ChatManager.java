@@ -21,7 +21,7 @@ public class ChatManager {
     public ChatManager(){
         this.protocoleDeCommunication = new ProtocoleDeCommunication(this);
         this.session = new Sessions();
-        this.user = new UserLocal(null, null, "damien", "toto");
+        this.user = new UserLocal(null, null, "vince", "toto");
         this.listeDesUsagers = new ListeDesUsagers(this);
         protocoleDeCommunication.ecouteDuReseauEnUDP();
         protocoleDeCommunication.ecouteDuReseauEnTCP(userPort());
@@ -96,6 +96,14 @@ public class ChatManager {
     }
 
 
+    public void defenieSessionCourante(String pseudoUtilisateurDistantEnChat) {
+        UsersDistants utilisateurDistantEnChat = listeDesUsagers.retourneUtilisateurDistantsParSonPseudo(pseudoUtilisateurDistantEnChat);
+        session.definieUserDistantCourant(utilisateurDistantEnChat);
+    }
+
+    public UsersDistants useSessionCourante(){
+        return session.userDistantSessionCourante();
+    }
 }
 
 
