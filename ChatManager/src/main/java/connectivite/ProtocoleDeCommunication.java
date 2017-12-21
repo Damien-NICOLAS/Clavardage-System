@@ -6,6 +6,7 @@ import model.UserLocal;
 import model.UsersDistants;
 
 
+import javax.jws.soap.SOAPBinding;
 import java.util.Set;
 
 public class ProtocoleDeCommunication {
@@ -112,11 +113,15 @@ public class ProtocoleDeCommunication {
                 break;
 
             case DEMANDE_DE_CONNEXION:
+                String loginIpAddressEtPortUserDistant[] = messageSurLeReseauRecue[2].split("[,]");
+                String loginDistant = loginIpAddressEtPortUserDistant[0];
+                String ipAddress = loginIpAddressEtPortUserDistant[1];
+                int port = Integer.parseInt(loginIpAddressEtPortUserDistant[2]);
+                UsersDistants newUserDistant = new UsersDistants(loginDistant, ipAddress, null, port);
+                clavardageManager.accesALaListeDesUsagers().ajouteUnUtilisateurDistantALaListe(newUserDistant);
                 if (dernierSurLaListe){
-                    String ipAddressUserDistantEtPort[] = messageSurLeReseauRecue[1].split("[,]");
-                    String ipAddress = ipAddressUserDistantEtPort[0];
+                    System.out.println("J'ai reçu une demande de connexion de la part de "+ ipAddress + " "+ loginDistant );
                     if(!ipAddress.equals(clavardageManager.userIp())) {
-                        int port = Integer.parseInt(ipAddressUserDistantEtPort[1]);
                         envoieDesUsersDistantAuNouvelEntrant(ipAddress, port);
                         dernierSurLaListe = false;
                         System.out.println("J'ai envoyé ma liste à l'user distant");
@@ -133,6 +138,7 @@ public class ProtocoleDeCommunication {
                 break;
 
             case ENVOIE_USERSDISTANTS:
+                System.out.println("J'ai reçu des nouveaux usagers");
                 String toutLesUsagers = messageSurLeReseauRecue[1];
                 this.clavardageManager.accesALaListeDesUsagers().ajouteToutLesUsagers(toutLesUsagers);
                 break;
@@ -172,7 +178,7 @@ public class ProtocoleDeCommunication {
 
 
     public void demandeDeConnexion(){
-        String adresseIpDuDemandeurEtPort = this.clavardageManager.userIp()+","+this.clavardageManager.userPort();
+        String adresseIpDuDemandeurEtPort = this.clavardageManager.userLogin()+","+this.clavardageManager.userIp()+","+this.clavardageManager.userPort();
         MessageSurLeReseau demandeDeConnexionMessage = new MessageSurLeReseau(Entete.DEMANDE_DE_CONNEXION, adresseIpDuDemandeurEtPort);
         udp_envoieMessage = new UDP_EnvoieMessage();
         try {
@@ -191,12 +197,12 @@ public class ProtocoleDeCommunication {
 
         if(!ipAdress.equals(clavardageManager.userIp())) {
             String toutLesUsersAsString = this.clavardageManager.accesALaListeDesUsagers().retourneToutLesUsagersAsString();
-
+            System.out.println(toutLesUsersAsString);
             MessageSurLeReseau toutLesUsersDistants = new MessageSurLeReseau(Entete.ENVOIE_USERSDISTANTS, toutLesUsersAsString);
 
             envoieDunMessageEnTCPparIP(ipAdress, port, toutLesUsersDistants);
 
-            System.out.println("J'ai envoyé ma liste");
+            System.out.println("J'ai envoyé ma liste à "+ipAdress);
         }
     }
 

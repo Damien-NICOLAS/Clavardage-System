@@ -1,12 +1,14 @@
 package ui.presenter;
 
 import main.ChatManager;
+import model.ListeDesUsagers;
 import model.Sessions;
 import model.UsersDistants;
 import ui.viewer.DialoguePageViewer;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import java.util.ArrayList;
 
 
 public class DialoguePageController {
@@ -57,9 +59,11 @@ public class DialoguePageController {
                 String pseudoUsersCo = this.chatManager.accesALaListeDesUsagers().retourneUnUtilisateurDistantParSonLogin(usersCo).getPseudoActuel();
                 System.out.println("Pseudo co : " + pseudoUsersCo);
 
-                if (!(pseudoUsersCo == this.chatManager.userPseudo())) {
-                    DefaultMutableTreeNode child = new DefaultMutableTreeNode(pseudoUsersCo);
-                    root.add(child);
+                if(pseudoUsersCo != null) {
+                    if (!(pseudoUsersCo == this.chatManager.userPseudo())) {
+                        DefaultMutableTreeNode child = new DefaultMutableTreeNode(pseudoUsersCo);
+                        root.add(child);
+                    }
                 }
             }
             listeUsersCo.updateUI();
@@ -73,7 +77,7 @@ public class DialoguePageController {
                 String pseudoUsersSession = sessionCourante.getPseudoActuel();
                 System.out.println("Session Activée : " + pseudoUsersSession);
 
-                if (!(pseudoUsersSession == this.chatManager.userPseudo())) {
+                if (!(pseudoUsersSession.equals(this.chatManager.userPseudo()))) {
                     DefaultMutableTreeNode child = new DefaultMutableTreeNode(pseudoUsersSession);
                     root.add(child);
                 }
@@ -88,5 +92,11 @@ public class DialoguePageController {
         chatManager.useListSessions().removeUserDistantOfSession(pseudo);
         listeSessions.updateUI();
 
+    }
+
+    public void show() {
+        ListeDesUsagers list = chatManager.accesALaListeDesUsagers();
+
+        System.out.println(list.retourneToutLesUsagersAsString());
     }
 }

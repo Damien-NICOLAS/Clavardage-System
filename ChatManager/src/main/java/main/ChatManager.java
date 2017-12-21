@@ -21,7 +21,7 @@ public class ChatManager {
     public ChatManager(){
         this.protocoleDeCommunication = new ProtocoleDeCommunication(this);
         this.session = new Sessions();
-        this.user = new UserLocal(null, null, "vince", "toto");
+        this.user = new UserLocal(null, null, "damien", "toto");
         this.listeDesUsagers = new ListeDesUsagers(this);
         protocoleDeCommunication.ecouteDuReseauEnUDP();
         protocoleDeCommunication.ecouteDuReseauEnTCP(userPort());
