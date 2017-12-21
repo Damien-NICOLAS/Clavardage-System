@@ -92,7 +92,7 @@ public class ProtocoleDeCommunication {
         String[] messageSurLeReseauRecue = messageRecue.split("[$]", 2);
 
         Entete enteteDuMessageRentrant = Entete.valueOf(messageSurLeReseauRecue[0]);
-
+        System.out.println(enteteDuMessageRentrant);
         switch (enteteDuMessageRentrant) {
             case ENVOIE_MESSAGE:
                 //clavardageManager.envoieAuDessus(messageSurLeReseauRecue[1]);
@@ -113,7 +113,7 @@ public class ProtocoleDeCommunication {
                 break;
 
             case DEMANDE_DE_CONNEXION:
-                String loginIpAddressEtPortUserDistant[] = messageSurLeReseauRecue[2].split("[,]");
+                String loginIpAddressEtPortUserDistant[] = messageSurLeReseauRecue[1].split("[,]");
                 String loginDistant = loginIpAddressEtPortUserDistant[0];
                 String ipAddress = loginIpAddressEtPortUserDistant[1];
                 int port = Integer.parseInt(loginIpAddressEtPortUserDistant[2]);
@@ -166,11 +166,16 @@ public class ProtocoleDeCommunication {
 
         UsersDistants userLocalAsDistant = clavardageManager.returnUserLocal().retourneUserLocalAsDistant();
 
-        Set<String> toutLesUtilisateurConnecte = clavardageManager.accesALaListeDesUsagers().retourneToutLesUsagers();
-        MessageSurLeReseau messageSurLeReseau = new MessageSurLeReseau(Entete.ENVOIE_USERLOCAL, userLocalAsDistant);
+        MessageSurLeReseau messageSurLeReseauComportantUserLocal = new MessageSurLeReseau(Entete.ENVOIE_USERLOCAL, userLocalAsDistant);
+        udp_envoieMessage = new UDP_EnvoieMessage();
+        try {
+
+            udp_envoieMessage.sendMessageOn(PORT_UDP_BROADCAST, messageSurLeReseauComportantUserLocal);
+        } catch (Exception e) {
+
+        }
 
 
-        envoieDunMessageEnUDP(toutLesUtilisateurConnecte, messageSurLeReseau);
         System.out.println("J'ai envoyé mon user local");
 
     }
@@ -181,6 +186,7 @@ public class ProtocoleDeCommunication {
         String adresseIpDuDemandeurEtPort = this.clavardageManager.userLogin()+","+this.clavardageManager.userIp()+","+this.clavardageManager.userPort();
         MessageSurLeReseau demandeDeConnexionMessage = new MessageSurLeReseau(Entete.DEMANDE_DE_CONNEXION, adresseIpDuDemandeurEtPort);
         udp_envoieMessage = new UDP_EnvoieMessage();
+        System.out.println(adresseIpDuDemandeurEtPort);
         try {
             udp_envoieMessage.sendMessageOn( PORT_UDP_BROADCAST, demandeDeConnexionMessage);
         } catch (Exception e) {
