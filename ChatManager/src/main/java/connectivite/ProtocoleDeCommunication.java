@@ -1,12 +1,15 @@
 package connectivite;
 
 
+import historique.MessageHistorique;
+import historique.MomentEcriture;
 import main.ChatManager;
 import model.UserLocal;
 import model.UsersDistants;
 
 
 import javax.jws.soap.SOAPBinding;
+import java.io.IOException;
 import java.util.Set;
 
 public class ProtocoleDeCommunication {
@@ -99,7 +102,12 @@ public class ProtocoleDeCommunication {
                 String[] messageEtCeluiQuiTeParleAsTab = messageEtCeluiQuiTeParleAsString.split("[,]");
                 String celuiQuiTeParle = messageEtCeluiQuiTeParleAsTab[0];
                 String message = messageEtCeluiQuiTeParleAsTab[1];
-                //Utiliser écriture dans le fichier
+                MessageHistorique theMessageHistorique = clavardageManager.useListSessions().retrouveUnHistoriqueParSonUser(celuiQuiTeParle);
+                try {
+                    theMessageHistorique.ecriturefichier(MomentEcriture.MESSAGE_RECU, message);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                 break;
             case ENVOIE_USERLOCAL:

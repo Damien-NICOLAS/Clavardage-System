@@ -1,8 +1,10 @@
 package model;
 
 import historique.MessageHistorique;
+import historique.NotFileException;
 import main.ChatManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Sessions {
@@ -24,7 +26,6 @@ public class Sessions {
         listeSessions.add(usersDistants);
         MessageHistorique nouveauMessageHistorique = new MessageHistorique(usersDistants, chatManager);
         messageHistoriques.add(nouveauMessageHistorique);
-
     }
 
     public void afficheListeSessions() {

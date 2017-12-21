@@ -36,6 +36,8 @@ public class MessageHistorique {
         userDistant = user;
         fichierTrouver=null;
 
+
+
     }
     public String toString() {
         return PATH+chatManager.userLogin()+"_"+userDistant.getLogin()+".txt";
